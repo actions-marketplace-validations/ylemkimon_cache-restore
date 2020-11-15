@@ -1,7 +1,7 @@
 ## Contributing
 
-[fork]: https://github.com/actions/cache/fork
-[pr]: https://github.com/actions/cache/compare
+[fork]: https://github.com/ylemkimon/cache-restore/fork
+[pr]: https://github.com/ylemkimon/cache-restore/compare
 [style]: https://github.com/styleguide/js
 [code-of-conduct]: CODE_OF_CONDUCT.md
 

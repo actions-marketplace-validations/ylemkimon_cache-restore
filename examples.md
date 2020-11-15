@@ -36,7 +36,7 @@
 Using [NuGet lock files](https://docs.microsoft.com/nuget/consume-packages/package-references-in-project-files#locking-dependencies):
 
 ```yaml
-- uses: actions/cache@v2
+- uses: ylemkimon/cache-restore@v2
   with:
     path: ~/.nuget/packages
     key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
@@ -45,9 +45,9 @@ Using [NuGet lock files](https://docs.microsoft.com/nuget/consume-packages/packa
 ```
 
 Depending on the environment, huge packages might be pre-installed in the global cache folder.
-With `actions/cache@v2` you can now exclude unwanted packages with [exclude pattern](https://github.com/actions/toolkit/tree/main/packages/glob#exclude-patterns)
+With `ylemkimon/cache-restore@v2` you can now exclude unwanted packages with [exclude pattern](https://github.com/actions/toolkit/tree/main/packages/glob#exclude-patterns)
 ```yaml
-- uses: actions/cache@v2
+- uses: ylemkimon/cache-restore@v2
   with:
     path: | 
       ~/.nuget/packages
@@ -63,7 +63,7 @@ Or you could move the cache folder like below.
 env:
   NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
 steps:
-  - uses: actions/cache@v2
+  - uses: ylemkimon/cache-restore@v2
     with:
       path: ${{ github.workspace }}/.nuget/packages
       key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
@@ -76,7 +76,7 @@ steps:
 ### POSIX
 
 ```yaml
-- uses: actions/cache@v2
+- uses: ylemkimon/cache-restore@v2
   with:
     path: ~/.dub
     key: ${{ runner.os }}-dub-${{ hashFiles('**/dub.json') }}
@@ -87,7 +87,7 @@ steps:
 ### Windows
 
 ```yaml
-- uses: actions/cache@v2
+- uses: ylemkimon/cache-restore@v2
   with:
     path: ~\AppData\Local\dub
     key: ${{ runner.os }}-dub-${{ hashFiles('**/dub.json') }}
@@ -97,7 +97,7 @@ steps:
 
 ## Elixir - Mix
 ```yaml
-- uses: actions/cache@v2
+- uses: ylemkimon/cache-restore@v2
   with:
     path: deps
     key: ${{ runner.os }}-mix-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
@@ -108,7 +108,7 @@ steps:
 ## Go - Modules
 
 ```yaml
-- uses: actions/cache@v2
+- uses: ylemkimon/cache-restore@v2
   with:
     path: ~/go/pkg/mod
     key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
@@ -122,7 +122,7 @@ We cache the elements of the Cabal store separately, as the entirety of `~/.caba
 
 ```yaml
 - name: Cache ~/.cabal/packages, ~/.cabal/store and dist-newstyle
-  uses: actions/cache@v2
+  uses: ylemkimon/cache-restore@v2
   with:
     path: |
       ~/.cabal/packages
@@ -134,7 +134,7 @@ We cache the elements of the Cabal store separately, as the entirety of `~/.caba
 ## Java - Gradle
 
 ```yaml
-- uses: actions/cache@v2
+- uses: ylemkimon/cache-restore@v2
   with:
     path: |
       ~/.gradle/caches
@@ -148,7 +148,7 @@ We cache the elements of the Cabal store separately, as the entirety of `~/.caba
 
 ```yaml
 - name: Cache local Maven repository
-  uses: actions/cache@v2
+  uses: ylemkimon/cache-restore@v2
   with:
     path: ~/.m2/repository
     key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
@@ -167,7 +167,7 @@ If using `npm config` to retrieve the cache directory, ensure you run [actions/s
 ### macOS and Ubuntu
 
 ```yaml
-- uses: actions/cache@v2
+- uses: ylemkimon/cache-restore@v2
   with:
     path: ~/.npm
     key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
@@ -182,7 +182,7 @@ If using `npm config` to retrieve the cache directory, ensure you run [actions/s
   id: npm-cache
   run: |
     echo "::set-output name=dir::$(npm config get cache)"
-- uses: actions/cache@v2
+- uses: ylemkimon/cache-restore@v2
   with:
     path: ${{ steps.npm-cache.outputs.dir }}
     key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
@@ -197,7 +197,7 @@ If using `npm config` to retrieve the cache directory, ensure you run [actions/s
   id: npm-cache
   run: |
     echo "::set-output name=dir::$(npm config get cache)"
-- uses: actions/cache@v2
+- uses: ylemkimon/cache-restore@v2
   with:
     path: ${{ steps.npm-cache.outputs.dir }}
     key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
@@ -209,7 +209,7 @@ If using `npm config` to retrieve the cache directory, ensure you run [actions/s
 
 ```yaml
 - name: restore lerna
-  uses: actions/cache@v2
+  uses: ylemkimon/cache-restore@v2
   with:
     path: |
       node_modules
@@ -225,7 +225,7 @@ The yarn cache directory will depend on your operating system and version of `ya
   id: yarn-cache-dir-path
   run: echo "::set-output name=dir::$(yarn cache dir)"
 
-- uses: actions/cache@v2
+- uses: ylemkimon/cache-restore@v2
   id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
   with:
     path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
@@ -243,7 +243,7 @@ The yarn 2 cache directory will depend on your config. See https://yarnpkg.com/c
   id: yarn-cache-dir-path
   run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
 
-- uses: actions/cache@v2
+- uses: ylemkimon/cache-restore@v2
   id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
   with:
     path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
@@ -257,7 +257,7 @@ Esy allows you to export built dependencies and import pre-built dependencies.
 ```yaml
     - name: Restore Cache
       id: restore-cache
-      uses: actions/cache@v2
+      uses: ylemkimon/cache-restore@v2
       with:
         path: _export
         key:  ${{ runner.os }}-esy-${{ hashFiles('esy.lock/index.json') }}
@@ -287,7 +287,7 @@ Esy allows you to export built dependencies and import pre-built dependencies.
   id: composer-cache
   run: |
     echo "::set-output name=dir::$(composer config cache-files-dir)"
-- uses: actions/cache@v2
+- uses: ylemkimon/cache-restore@v2
   with:
     path: ${{ steps.composer-cache.outputs.dir }}
     key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -306,7 +306,7 @@ Locations:
 
 ### Simple example
 ```yaml
-- uses: actions/cache@v2
+- uses: ylemkimon/cache-restore@v2
   with:
     path: ~/.cache/pip
     key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
@@ -319,7 +319,7 @@ Replace `~/.cache/pip` with the correct `path` if not using Ubuntu.
 ### Multiple OS's in a workflow
 
 ```yaml
-- uses: actions/cache@v2
+- uses: ylemkimon/cache-restore@v2
   if: startsWith(runner.os, 'Linux')
   with:
     path: ~/.cache/pip
@@ -327,7 +327,7 @@ Replace `~/.cache/pip` with the correct `path` if not using Ubuntu.
     restore-keys: |
       ${{ runner.os }}-pip-
 
-- uses: actions/cache@v2
+- uses: ylemkimon/cache-restore@v2
   if: startsWith(runner.os, 'macOS')
   with:
     path: ~/Library/Caches/pip
@@ -335,7 +335,7 @@ Replace `~/.cache/pip` with the correct `path` if not using Ubuntu.
     restore-keys: |
       ${{ runner.os }}-pip-
 
-- uses: actions/cache@v2
+- uses: ylemkimon/cache-restore@v2
   if: startsWith(runner.os, 'Windows')
   with:
     path: ~\AppData\Local\pip\Cache
@@ -354,7 +354,7 @@ Replace `~/.cache/pip` with the correct `path` if not using Ubuntu.
     echo "::set-output name=dir::$(pip cache dir)"
 
 - name: pip cache
-  uses: actions/cache@v2
+  uses: ylemkimon/cache-restore@v2
   with:
     path: ${{ steps.pip-cache.outputs.dir }}
     key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
@@ -371,7 +371,7 @@ Replace `~/.cache/pip` with the correct `path` if not using Ubuntu.
   run: |
     python -c "from pip._internal.locations import USER_CACHE_DIR; print('::set-output name=dir::' + USER_CACHE_DIR)"
 
-- uses: actions/cache@v2
+- uses: ylemkimon/cache-restore@v2
   with:
     path: ${{ steps.pip-cache.outputs.dir }}
     key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
@@ -390,7 +390,7 @@ Locations:
 
 ### Simple example
 ```yaml
-- uses: actions/cache@v2
+- uses: ylemkimon/cache-restore@v2
   with:
     path: ~/.local/share/renv
     key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
@@ -403,7 +403,7 @@ Replace `~/.local/share/renv` with the correct `path` if not using Ubuntu.
 ### Multiple OS's in a workflow
 
 ```yaml
-- uses: actions/cache@v2
+- uses: ylemkimon/cache-restore@v2
   if: startsWith(runner.os, 'Linux')
   with:
     path: ~/.local/share/renv
@@ -411,7 +411,7 @@ Replace `~/.local/share/renv` with the correct `path` if not using Ubuntu.
     restore-keys: |
       ${{ runner.os }}-renv-
 
-- uses: actions/cache@v2
+- uses: ylemkimon/cache-restore@v2
   if: startsWith(runner.os, 'macOS')
   with:
     path: ~/Library/Application Support/renv
@@ -419,7 +419,7 @@ Replace `~/.local/share/renv` with the correct `path` if not using Ubuntu.
     restore-keys: |
       ${{ runner.os }}-renv-
 
-- uses: actions/cache@v2
+- uses: ylemkimon/cache-restore@v2
   if: startsWith(runner.os, 'Windows')
   with:
     path: ~\AppData\Local\renv
@@ -431,7 +431,7 @@ Replace `~/.local/share/renv` with the correct `path` if not using Ubuntu.
 ## Ruby - Bundler
 
 ```yaml
-- uses: actions/cache@v2
+- uses: ylemkimon/cache-restore@v2
   with:
     path: vendor/bundle
     key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
@@ -450,7 +450,7 @@ When dependencies are installed later in the workflow, we must specify the same 
 ## Rust - Cargo
 
 ```yaml
-- uses: actions/cache@v2
+- uses: ylemkimon/cache-restore@v2
   with:
     path: |
       ~/.cargo/registry
@@ -463,7 +463,7 @@ When dependencies are installed later in the workflow, we must specify the same 
 
 ```yaml
 - name: Cache SBT
-  uses: actions/cache@v2
+  uses: ylemkimon/cache-restore@v2
   with:
     path: | 
       ~/.ivy2/cache
@@ -474,7 +474,7 @@ When dependencies are installed later in the workflow, we must specify the same 
 ## Swift, Objective-C - Carthage
 
 ```yaml
-- uses: actions/cache@v2
+- uses: ylemkimon/cache-restore@v2
   with:
     path: Carthage
     key: ${{ runner.os }}-carthage-${{ hashFiles('**/Cartfile.resolved') }}
@@ -485,7 +485,7 @@ When dependencies are installed later in the workflow, we must specify the same 
 ## Swift, Objective-C - CocoaPods
 
 ```yaml
-- uses: actions/cache@v2
+- uses: ylemkimon/cache-restore@v2
   with:
     path: Pods
     key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
@@ -496,7 +496,7 @@ When dependencies are installed later in the workflow, we must specify the same 
 ## Swift - Swift Package Manager
 
 ```yaml
-- uses: actions/cache@v2
+- uses: ylemkimon/cache-restore@v2
   with:
     path: .build
     key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}

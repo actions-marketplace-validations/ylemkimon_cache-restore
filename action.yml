@@ -1,6 +1,6 @@
-name: 'Cache'
-description: 'Cache artifacts like dependencies and build outputs to improve workflow execution time'
-author: 'GitHub'
+name: 'Cache Restore'
+description: 'Restore cached artifacts like dependencies and build outputs to improve workflow execution time'
+author: 'ylemkimon'
 inputs:
   path:
     description: 'A list of files, directories, and wildcard patterns to cache and restore'
@@ -20,8 +20,6 @@ outputs:
 runs:
   using: 'node12'
   main: 'dist/restore/index.js'
-  post: 'dist/save/index.js'
-  post-if: 'success()'
 branding:
   icon: 'archive'
   color: 'gray-dark'
